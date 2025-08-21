@@ -8,7 +8,7 @@ import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
 @Data
-@Table
+@Table(name = "usuarios")
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserEntity {

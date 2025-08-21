@@ -9,14 +9,16 @@ import reactor.core.Exceptions;
 public class UserErrorFactory {
     public static RuntimeException createException(Throwable error) {
         if (error instanceof R2dbcException) {
-            return new ServiceUnavailableExceptions(Constantes.DATABASE_UNAVAILABLE);
+            return new ServiceUnavailableExceptions(Constantes.DATABASE_UNAVAILABLE, error);
         }
         if (Exceptions.isRetryExhausted(error)) {
-            return new GatewayTimeOutExceptions(Constantes.DATABASE_TIMEOUT);
+            return new GatewayTimeOutExceptions(Constantes.DATABASE_TIMEOUT, error);
         }
         if (error instanceof UserNotFoundException) {
-            return new UserNotFoundException(error.getMessage());
+            return new UserNotFoundException(error.getMessage(), error);
         }
-        return new UserExceptions(Constantes.DATABASE_USER_EXCEPTIONS);
+        return new UserExceptions(Constantes.DATABASE_USER_EXCEPTIONS, error);
     }
 }
+
+

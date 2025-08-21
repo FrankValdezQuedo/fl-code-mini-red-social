@@ -4,11 +4,12 @@ import code.fl.proyectoredsocial.domain.error.UserErrorFactory;
 import code.fl.proyectoredsocial.domain.model.User;
 import code.fl.proyectoredsocial.domain.model.UserListResponse;
 import code.fl.proyectoredsocial.infraestructure.entity.UserEntity;
-import code.fl.proyectoredsocial.infraestructure.model.UserRequest;
+import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Mono;
 
 import java.util.Collections;
 
+@Slf4j
 public class UserUtils {
 
     public static UserListResponse convertUserSingletonResponse(UserEntity entity) {
@@ -23,11 +24,13 @@ public class UserUtils {
                 .username(entity.getUsername())
                 .password(entity.getPassword())
                 .rol(entity.getRol())
+                .nombre(entity.getNombre())
                 .biografia(entity.getBiografia())
                 .build();
     }
 
-    public static Mono<UserListResponse> handleErrorUserMono(Throwable error) {
+    public static <T> Mono<T> handleErrorUserMono(Throwable error) {
+        log.error("Error procesando request: {}", error.getMessage(), error);
         return Mono.error(UserErrorFactory.createException(error));
     }
 

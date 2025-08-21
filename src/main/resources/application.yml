@@ -1,0 +1,16 @@
+server:
+  port: 8085
+spring:
+  application:
+    name: api-sb-supplier-ms
+  jackson:
+    property-naming-strategy: SNAKE_CASE
+
+  r2dbc:
+    url: r2dbc:postgresql://localhost:5432/mini_red_social
+    username: postgres
+    password: 1234
+
+  logging:
+    level:
+      org.springframework.web.cors: DEBUG
