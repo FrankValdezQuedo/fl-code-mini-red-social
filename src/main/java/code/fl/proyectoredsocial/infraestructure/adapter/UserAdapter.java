@@ -27,6 +27,6 @@ public class UserAdapter implements UserRepositoryOutputPort {
 
     @Override
     public Mono<UserEntity> saveUser(UserEntity userEntity) {
-        return null;
+        return userRepository.save(userEntity);
     }
 }

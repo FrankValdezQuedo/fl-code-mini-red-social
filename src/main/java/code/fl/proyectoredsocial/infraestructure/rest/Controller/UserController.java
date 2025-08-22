@@ -3,6 +3,8 @@ package code.fl.proyectoredsocial.infraestructure.rest.Controller;
 import code.fl.proyectoredsocial.application.port.in.UserInputPort;
 import code.fl.proyectoredsocial.domain.error.UserNotFoundException;
 import code.fl.proyectoredsocial.domain.model.UserListResponse;
+import code.fl.proyectoredsocial.domain.model.UserResponse;
+import code.fl.proyectoredsocial.infraestructure.model.UserRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -26,6 +28,12 @@ public class UserController {
     @GetMapping("/all")
     public Mono<UserListResponse> findAll() {
         return userInputPort.findAll();
+    }
+
+    @PostMapping("/save")
+    public Mono<UserResponse> saveUser(@RequestBody @Validated UserRequest userRequest) {
+        return userInputPort.saveUser(userRequest)
+                .switchIfEmpty(Mono.error(new IllegalArgumentException("UserRequest no puede ser null")));
     }
 
 

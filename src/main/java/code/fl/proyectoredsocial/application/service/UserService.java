@@ -4,6 +4,8 @@ import code.fl.proyectoredsocial.application.port.in.UserInputPort;
 import code.fl.proyectoredsocial.application.port.out.UserRepositoryOutputPort;
 import code.fl.proyectoredsocial.domain.error.UserNotFoundException;
 import code.fl.proyectoredsocial.domain.model.UserListResponse;
+import code.fl.proyectoredsocial.domain.model.UserResponse;
+import code.fl.proyectoredsocial.infraestructure.entity.UserEntity;
 import code.fl.proyectoredsocial.infraestructure.model.UserRequest;
 import code.fl.proyectoredsocial.infraestructure.utils.UserUtils;
 import lombok.AllArgsConstructor;
@@ -43,7 +45,13 @@ public class UserService implements UserInputPort {
     }
 
     @Override
-    public Mono<UserListResponse> saveUser(UserRequest userRequest) {
-        return null;
+    public Mono<UserResponse> saveUser(UserRequest userRequest) {
+        return Mono.just(userRequest)
+                .map(user -> UserUtils.convertUserEntity(userRequest))
+                .flatMap(userRepositoryOutputPort::saveUser)
+                .map(userEntity -> UserUtils.convertUserResponseSave(String.valueOf(userEntity.getId())))
+                .doOnError(error -> log.error("Error guardando usuario: {}", error.getMessage(), error))
+                .onErrorResume(UserUtils::handleErrorCustomer);
     }
+
 }
