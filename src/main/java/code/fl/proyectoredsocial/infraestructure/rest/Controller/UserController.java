@@ -1,6 +1,7 @@
 package code.fl.proyectoredsocial.infraestructure.rest.Controller;
 
 import code.fl.proyectoredsocial.application.port.in.UserInputPort;
+import code.fl.proyectoredsocial.domain.error.UserNotFoundException;
 import code.fl.proyectoredsocial.domain.model.UserListResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.validation.annotation.Validated;
@@ -17,8 +18,10 @@ public class UserController {
     private final UserInputPort userInputPort;
 
     @GetMapping("/{id}")
-    Mono<UserListResponse> findById(@PathVariable Long id) {
-        return userInputPort.findById(id);
+    public Mono<UserListResponse> findById(@PathVariable Long id) {
+        return userInputPort.findById(id)
+                .switchIfEmpty(Mono.error(new UserNotFoundException("Usuario no encontrado con id " + id)));
     }
+
 
 }
