@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Mono;
 
 import java.util.Collections;
+import java.util.List;
 
 @Slf4j
 public class UserUtils {
@@ -26,6 +27,14 @@ public class UserUtils {
                 .rol(entity.getRol())
                 .nombre(entity.getNombre())
                 .biografia(entity.getBiografia())
+                .build();
+    }
+
+    public static UserListResponse convertCustomerListResponse(List<UserEntity> entity) {
+        return UserListResponse.builder()
+                .data(entity.stream()
+                        .map(UserUtils::convertUserResponse)
+                        .toList())
                 .build();
     }
 

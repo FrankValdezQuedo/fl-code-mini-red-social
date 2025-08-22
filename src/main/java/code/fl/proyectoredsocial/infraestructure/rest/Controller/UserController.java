@@ -23,5 +23,10 @@ public class UserController {
                 .switchIfEmpty(Mono.error(new UserNotFoundException("Usuario no encontrado con id " + id)));
     }
 
+    @GetMapping("/all")
+    public Mono<UserListResponse> findAll() {
+        return userInputPort.findAll();
+    }
+
 
 }

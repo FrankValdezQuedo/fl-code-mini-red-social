@@ -5,6 +5,7 @@ import code.fl.proyectoredsocial.infraestructure.entity.UserEntity;
 import code.fl.proyectoredsocial.infraestructure.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Component
@@ -20,8 +21,8 @@ public class UserAdapter implements UserRepositoryOutputPort {
     }
 
     @Override
-    public Mono<UserEntity> findAll() {
-        return null;
+    public Flux<UserEntity> findAll() {
+        return userRepository.findAll();
     }
 
     @Override

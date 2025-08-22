@@ -33,7 +33,13 @@ public class UserService implements UserInputPort {
 
     @Override
     public Mono<UserListResponse> findAll() {
-        return null;
+        return userRepositoryOutputPort
+                .findAll()
+                .collectList()
+                .map(UserUtils::convertCustomerListResponse)
+                .doOnError(error -> log.error("Error en findAll(): {}", error.getMessage()))
+                .onErrorResume(UserUtils::handleErrorUserMono);
+
     }
 
     @Override
