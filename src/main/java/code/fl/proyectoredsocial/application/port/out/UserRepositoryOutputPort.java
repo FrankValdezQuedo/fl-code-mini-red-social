@@ -9,6 +9,6 @@ import reactor.core.publisher.Mono;
 public interface UserRepositoryOutputPort {
     Mono<UserEntity> findById(Long id);
     Flux<UserEntity> findAll();
-    Mono<UserEntity> saveUser(UserEntity userEntity);
+    Mono<UserEntity> saveUserOrUpdate(UserEntity userEntity);
 
 }

@@ -42,6 +42,17 @@ public class UserUtils {
                 .build();
     }
 
+    public static UserEntity convertUserEntityUpdate(UserRequest userRequest) {
+        return UserEntity.builder()
+                .id(userRequest.getId())
+                .username(userRequest.getUsername())
+                .password(userRequest.getPassword())
+                .rol(userRequest.getRol())
+                .nombre(userRequest.getNombre())
+                .biografia(userRequest.getBiografia())
+                .build();
+    }
+
     public static UserListResponse convertCustomerListResponse(List<UserEntity> entity) {
         return UserListResponse.builder()
                 .data(entity.stream()

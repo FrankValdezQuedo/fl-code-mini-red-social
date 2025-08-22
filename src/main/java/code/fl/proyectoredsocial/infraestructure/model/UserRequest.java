@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class UserRequest {
 
+    private  Long id;
     @NotBlank(message = "El nombre de usuario no puede estar vacío")
     private String username;
 

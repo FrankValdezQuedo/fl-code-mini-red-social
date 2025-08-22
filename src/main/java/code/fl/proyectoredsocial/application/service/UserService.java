@@ -5,8 +5,8 @@ import code.fl.proyectoredsocial.application.port.out.UserRepositoryOutputPort;
 import code.fl.proyectoredsocial.domain.error.UserNotFoundException;
 import code.fl.proyectoredsocial.domain.model.UserListResponse;
 import code.fl.proyectoredsocial.domain.model.UserResponse;
-import code.fl.proyectoredsocial.infraestructure.entity.UserEntity;
 import code.fl.proyectoredsocial.infraestructure.model.UserRequest;
+import code.fl.proyectoredsocial.infraestructure.utils.Constantes;
 import code.fl.proyectoredsocial.infraestructure.utils.UserUtils;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,13 +25,10 @@ public class UserService implements UserInputPort {
         return userRepositoryOutputPort
                 .findById(id)
                 .map(UserUtils::convertUserSingletonResponse)
-                .switchIfEmpty(
-                        Mono.error(new UserNotFoundException("Usuario con id " + id + " no encontrado"))
-                )
+                .switchIfEmpty(Mono.error(new UserNotFoundException("Usuario con id " + id + " no encontrado")))
                 .doOnError(error -> log.error("Error en findById({}): {}", id, error.getMessage()))
                 .onErrorResume(UserUtils::handleErrorUserMono);
     }
-
 
     @Override
     public Mono<UserListResponse> findAll() {
@@ -48,10 +45,21 @@ public class UserService implements UserInputPort {
     public Mono<UserResponse> saveUser(UserRequest userRequest) {
         return Mono.just(userRequest)
                 .map(user -> UserUtils.convertUserEntity(userRequest))
-                .flatMap(userRepositoryOutputPort::saveUser)
+                .flatMap(userRepositoryOutputPort::saveUserOrUpdate)
                 .map(userEntity -> UserUtils.convertUserResponseSave(String.valueOf(userEntity.getId())))
-                .doOnError(error -> log.error("Error guardando usuario: {}", error.getMessage(), error))
+                .doOnError(error -> log.error(Constantes.SAVE_ERROR, error.getMessage(), error))
                 .onErrorResume(UserUtils::handleErrorCustomer);
     }
 
+    @Override
+    public Mono<UserResponse> updateUser(UserRequest userRequest) {
+        return userRepositoryOutputPort
+                .findById(userRequest.getId())
+                .map(userExisting -> UserUtils.convertUserEntityUpdate(userRequest))
+                .switchIfEmpty(Mono.error(new UserNotFoundException("Usuario con id " + userRequest.getId())))
+                .flatMap(userRepositoryOutputPort::saveUserOrUpdate)
+                .map(userEntity -> UserUtils.convertUserResponseSave(String.valueOf(userEntity.getId())))
+                .doOnError(error -> log.error("Error actualizando usuario: {}", error.getMessage(), error))
+                .onErrorResume(UserUtils::handleErrorCustomer);
+    }
 }
