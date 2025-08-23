@@ -36,5 +36,10 @@ public class UserController {
                 .switchIfEmpty(Mono.error(new IllegalArgumentException("UserRequest no puede ser null")));
     }
 
+    @PostMapping("/update")
+    public Mono<UserResponse> updateUser(@RequestBody @Validated UserRequest userRequest) {
+        return userInputPort.updateUser(userRequest)
+                .switchIfEmpty(Mono.error(new UserNotFoundException("Usuario no encontrado para actualizar con id " + userRequest.getId())));
+    }
 
 }

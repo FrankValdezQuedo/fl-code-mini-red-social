@@ -59,7 +59,7 @@ public class UserService implements UserInputPort {
                 .switchIfEmpty(Mono.error(new UserNotFoundException("Usuario con id " + userRequest.getId())))
                 .flatMap(userRepositoryOutputPort::saveUserOrUpdate)
                 .map(userEntity -> UserUtils.convertUserResponseSave(String.valueOf(userEntity.getId())))
-                .doOnError(error -> log.error("Error actualizando usuario: {}", error.getMessage(), error))
+                .doOnError(error -> log.error(Constantes.UPDATE_ERROR, error.getMessage(), error))
                 .onErrorResume(UserUtils::handleErrorCustomer);
     }
 }
