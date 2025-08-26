@@ -21,7 +21,7 @@ public class UserUtils {
                 .build();
     }
 
-    public static User convertUserResponse (UserEntity entity) {
+    public static User convertUserResponse(UserEntity entity) {
         return User.builder()
                 .id(entity.getId())
                 .username(entity.getUsername())
@@ -61,10 +61,18 @@ public class UserUtils {
                 .build();
     }
 
-    public static UserResponse convertUserResponseSave (String idUser) {
+    public static UserResponse convertUserResponseSave(String idUser) {
         return UserResponse.builder()
                 .codResponse(Constantes.COD_RESPONSE)
                 .messageResponse(Constantes.USER_SAVED)
+                .codEntity(idUser)
+                .build();
+    }
+
+    public static UserResponse convertUserResponseDelete(String idUser) {
+        return UserResponse.builder()
+                .codResponse(Constantes.COD_RESPONSE)
+                .messageResponse(Constantes.USER_DELETED)
                 .codEntity(idUser)
                 .build();
     }
@@ -73,7 +81,8 @@ public class UserUtils {
         log.error("Error procesando request: {}", error.getMessage(), error);
         return Mono.error(UserErrorFactory.createException(error));
     }
-    public static Mono<UserResponse> handleErrorCustomer(Throwable error) {
+
+    public static Mono<UserResponse> handleErrorUser(Throwable error) {
         return Mono.error(UserErrorFactory.createException(error));
     }
 

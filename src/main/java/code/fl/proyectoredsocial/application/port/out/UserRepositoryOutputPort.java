@@ -10,5 +10,5 @@ public interface UserRepositoryOutputPort {
     Mono<UserEntity> findById(Long id);
     Flux<UserEntity> findAll();
     Mono<UserEntity> saveUserOrUpdate(UserEntity userEntity);
-
+    Mono<Void> deleteById(Long id);
 }

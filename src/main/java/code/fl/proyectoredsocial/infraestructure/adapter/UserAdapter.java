@@ -29,4 +29,9 @@ public class UserAdapter implements UserRepositoryOutputPort {
     public Mono<UserEntity> saveUserOrUpdate(UserEntity userEntity) {
         return userRepository.save(userEntity);
     }
+
+    @Override
+    public Mono<Void> deleteById(Long id) {
+        return userRepository.deleteById(id);
+    }
 }

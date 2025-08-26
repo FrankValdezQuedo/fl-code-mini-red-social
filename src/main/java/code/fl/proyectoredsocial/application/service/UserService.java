@@ -48,7 +48,7 @@ public class UserService implements UserInputPort {
                 .flatMap(userRepositoryOutputPort::saveUserOrUpdate)
                 .map(userEntity -> UserUtils.convertUserResponseSave(String.valueOf(userEntity.getId())))
                 .doOnError(error -> log.error(Constantes.SAVE_ERROR, error.getMessage(), error))
-                .onErrorResume(UserUtils::handleErrorCustomer);
+                .onErrorResume(UserUtils::handleErrorUser);
     }
 
     @Override
@@ -60,6 +60,19 @@ public class UserService implements UserInputPort {
                 .flatMap(userRepositoryOutputPort::saveUserOrUpdate)
                 .map(userEntity -> UserUtils.convertUserResponseSave(String.valueOf(userEntity.getId())))
                 .doOnError(error -> log.error(Constantes.UPDATE_ERROR, error.getMessage(), error))
-                .onErrorResume(UserUtils::handleErrorCustomer);
+                .onErrorResume(UserUtils::handleErrorUser);
+    }
+
+    @Override
+    public Mono<UserResponse> deleteUser(Long id) {
+        return userRepositoryOutputPort
+                .findById(id)
+                .flatMap(userExisting -> userRepositoryOutputPort
+                        .deleteById(id)
+                        .then(Mono.defer(() -> Mono.just(UserUtils.convertUserResponseDelete(String.valueOf(id)))))
+                )
+                .switchIfEmpty(Mono.error(new UserNotFoundException("Usuario con id " + id + " no encontrado")))
+                .doOnError(error -> log.error(Constantes.DELETE_ERROR, error.getMessage(), error))
+                .onErrorResume(UserUtils::handleErrorUser);
     }
 }

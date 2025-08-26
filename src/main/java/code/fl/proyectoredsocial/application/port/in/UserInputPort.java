@@ -11,4 +11,5 @@ public interface UserInputPort {
     Mono<UserListResponse> findAll();
     Mono<UserResponse> saveUser(UserRequest userRequest);
     Mono<UserResponse> updateUser(UserRequest userRequest);
+    Mono<UserResponse> deleteUser(Long id);
 }

@@ -41,5 +41,10 @@ public class UserController {
         return userInputPort.updateUser(userRequest)
                 .switchIfEmpty(Mono.error(new UserNotFoundException("Usuario no encontrado para actualizar con id " + userRequest.getId())));
     }
+    @DeleteMapping("/delete/{id}")
+    public Mono<UserResponse> deleteUser(@PathVariable Long id) {
+        return userInputPort.deleteUser(id)
+                .switchIfEmpty(Mono.error(new UserNotFoundException("Usuario no encontrado para eliminar con id " + id)));
+    }
 
 }
