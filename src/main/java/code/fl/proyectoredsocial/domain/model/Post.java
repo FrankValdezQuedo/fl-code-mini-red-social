@@ -5,12 +5,16 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
 @Builder
-public class PostsResponce {
-    private Integer codResponse;
-    private String messageResponse;
-    private String codEntity;
+public class Post {
+    private Long id;
+    private String contenido;
+    private String imagenUrl;
+    private Long usuarioId;
+    private LocalDateTime fecha;
 }

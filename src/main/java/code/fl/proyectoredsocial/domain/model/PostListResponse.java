@@ -12,6 +12,6 @@ import java.util.List;
 @Data
 @Builder
 public class PostListResponse {
-    private List<Posts> posts;
+    private List<Post> data;
     private ErrorResponse errorResponse;
 }
