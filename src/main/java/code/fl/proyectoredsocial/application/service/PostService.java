@@ -38,8 +38,14 @@ public class PostService implements PostInputPort {
     }
 
     @Override
-    public Mono<PostEntity> savePost(PostEntity postsEntity) {
-        return null;
+    public Mono<PostResponse> savePost(PostRequest postRequest) {
+        return Mono.just(postRequest)
+                .map(PostUtils::convertPostEntity)
+                .flatMap(postRepositoryOutputPort::savePostOrUpdate)
+                .map(postEntity -> PostUtils.convertPostResponseSave(String.valueOf(postEntity.getId())))
+                .doOnError(error -> log.error("Error en savePost(): {}", error.getMessage(), error))
+                .onErrorResume(PostUtils::handleErrorPostMono);
+
     }
 
     @Override
