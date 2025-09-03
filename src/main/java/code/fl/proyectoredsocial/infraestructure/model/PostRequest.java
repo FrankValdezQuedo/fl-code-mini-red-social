@@ -2,7 +2,7 @@ package code.fl.proyectoredsocial.infraestructure.model;
 
 import jakarta.validation.constraints.NotBlank;
 
-public class PostsRequest {
+public class PostRequest {
     private long id;
 
     @NotBlank(message = "El contenido no puede estar vacío")

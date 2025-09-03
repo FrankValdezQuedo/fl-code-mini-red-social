@@ -29,7 +29,12 @@ public class PostService implements PostInputPort {
 
     @Override
     public Mono<PostListResponse> findAllByUsuarioId(Long id) {
-        return null;
+        return postRepositoryOutputPort
+                .findAllByUsuarioId(id)
+                .collectList()
+                .map(PostUtils::covertPostListResponse)
+                .doOnError(error -> log.error("Error en findAllByUsuarioId(): {}", error.getMessage()))
+                .onErrorResume(PostUtils::handleErrorPostMono);
     }
 
     @Override
