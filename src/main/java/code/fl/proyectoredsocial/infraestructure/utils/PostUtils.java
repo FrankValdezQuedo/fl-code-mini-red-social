@@ -3,7 +3,9 @@ package code.fl.proyectoredsocial.infraestructure.utils;
 import code.fl.proyectoredsocial.domain.error.UserErrorFactory;
 import code.fl.proyectoredsocial.domain.model.PostListResponse;
 import code.fl.proyectoredsocial.domain.model.Post;
+import code.fl.proyectoredsocial.domain.model.PostResponse;
 import code.fl.proyectoredsocial.infraestructure.entity.PostEntity;
+import code.fl.proyectoredsocial.infraestructure.model.PostRequest;
 import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Mono;
 
@@ -27,6 +29,23 @@ public class PostUtils {
                 .imagenUrl(entity.getImagenUrl())
                 .usuarioId(entity.getUsuarioId())
                 .fecha(entity.getFecha())
+                .build();
+    }
+
+    public static PostEntity convertPostEntity (PostRequest postRequest) {
+        return PostEntity.builder()
+                .contenido(postRequest.getContenido())
+                .imagenUrl(postRequest.getImagenUrl())
+                .usuarioId(postRequest.getUsuarioId())
+                .fecha(postRequest.getFecha())
+                .build();
+    }
+
+    public static PostResponse convertPostResponseSave(String id) {
+        return PostResponse.builder()
+                .codResponse(Constantes.COD_RESPONSE)
+                .messageResponse(Constantes.POST_SAVE)
+                .codEntity(id)
                 .build();
     }
 

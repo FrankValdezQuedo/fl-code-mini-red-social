@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 @Builder
-public class PostResponce {
+public class PostResponse {
     private Integer codResponse;
     private String messageResponse;
     private String codEntity;

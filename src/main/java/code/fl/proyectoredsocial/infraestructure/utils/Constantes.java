@@ -11,4 +11,5 @@ public class Constantes {
     public static final String SAVE_ERROR = "Error al guardar: ";
     public static final String UPDATE_ERROR = "Error al actualizar: ";
     public static final String DELETE_ERROR = "Error al eliminar: ";
+    public static final String POST_SAVE = "Post guardado exitosamente";
 }

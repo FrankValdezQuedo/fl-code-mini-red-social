@@ -3,7 +3,9 @@ package code.fl.proyectoredsocial.application.service;
 import code.fl.proyectoredsocial.application.port.in.PostInputPort;
 import code.fl.proyectoredsocial.application.port.out.PostRepositoryOutputPort;
 import code.fl.proyectoredsocial.domain.model.PostListResponse;
+import code.fl.proyectoredsocial.domain.model.PostResponse;
 import code.fl.proyectoredsocial.infraestructure.entity.PostEntity;
+import code.fl.proyectoredsocial.infraestructure.model.PostRequest;
 import code.fl.proyectoredsocial.infraestructure.utils.PostUtils;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -49,12 +51,12 @@ public class PostService implements PostInputPort {
     }
 
     @Override
-    public Mono<PostEntity> updatePost(PostEntity postsEntity) {
+    public Mono<PostResponse> updatePost(PostRequest postRequest) {
         return null;
     }
 
     @Override
-    public Mono<PostEntity> deletePost(Long id) {
+    public Mono<PostResponse> deletePost(Long id) {
         return null;
     }
 }

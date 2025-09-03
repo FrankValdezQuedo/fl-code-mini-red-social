@@ -18,6 +18,11 @@ public class PostAdapter implements PostRepositoryOutputPort {
     }
 
     @Override
+    public Mono<PostEntity> findById(Long id) {
+        return null;
+    }
+
+    @Override
     public Flux<PostEntity> findAllByUsuarioId(Long id) {
         return repository.findAllByUsuarioId(id);
     }
