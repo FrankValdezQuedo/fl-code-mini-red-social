@@ -1,6 +1,7 @@
 package code.fl.proyectoredsocial.infraestructure.model;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,17 +14,17 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 public class PostRequest {
-    private long id;
+
+    private Long id;
 
     @NotBlank(message = "El contenido no puede estar vacío")
     private String contenido;
 
-
     private String imagenUrl;
 
-    @NotBlank(message = "El ID de usuario no puede estar vacío")
-    private long usuarioId;
+    @NotNull(message = "El usuarioId no puede ser nulo")
+    private Long usuarioId;
 
-    @NotBlank(message = "La fecha no puede estar vacía")
+    @NotNull(message = "La fecha no puede ser nula")
     private LocalDateTime fecha;
 }

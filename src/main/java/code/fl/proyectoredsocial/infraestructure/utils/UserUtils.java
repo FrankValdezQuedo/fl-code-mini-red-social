@@ -69,6 +69,14 @@ public class UserUtils {
                 .build();
     }
 
+    public static UserResponse convertUserResponseUpdate(String idUser) {
+        return UserResponse.builder()
+                .codResponse(Constantes.COD_RESPONSE)
+                .messageResponse(Constantes.USER_UPDATED)
+                .codEntity(idUser)
+                .build();
+    }
+
     public static UserResponse convertUserResponseDelete(String idUser) {
         return UserResponse.builder()
                 .codResponse(Constantes.COD_RESPONSE)

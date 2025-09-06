@@ -41,10 +41,28 @@ public class PostUtils {
                 .build();
     }
 
+    public static PostEntity convertPostEntityUpdate(PostRequest postRequest) {
+        return PostEntity.builder()
+                .id(postRequest.getId())
+                .contenido(postRequest.getContenido())
+                .imagenUrl(postRequest.getImagenUrl())
+                .usuarioId(postRequest.getUsuarioId())
+                .fecha(postRequest.getFecha())
+                .build();
+    }
+
     public static PostResponse convertPostResponseSave(String id) {
         return PostResponse.builder()
                 .codResponse(Constantes.COD_RESPONSE)
                 .messageResponse(Constantes.POST_SAVE)
+                .codEntity(id)
+                .build();
+    }
+
+    public static PostResponse convertPostResponseDelete(String id) {
+        return PostResponse.builder()
+                .codResponse(Constantes.COD_RESPONSE)
+                .messageResponse(Constantes.POST_DELETED)
                 .codEntity(id)
                 .build();
     }

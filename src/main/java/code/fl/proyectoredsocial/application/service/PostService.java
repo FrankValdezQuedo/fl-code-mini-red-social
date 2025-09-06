@@ -2,6 +2,7 @@ package code.fl.proyectoredsocial.application.service;
 
 import code.fl.proyectoredsocial.application.port.in.PostInputPort;
 import code.fl.proyectoredsocial.application.port.out.PostRepositoryOutputPort;
+import code.fl.proyectoredsocial.application.port.out.UserRepositoryOutputPort;
 import code.fl.proyectoredsocial.domain.model.PostListResponse;
 import code.fl.proyectoredsocial.domain.model.PostResponse;
 import code.fl.proyectoredsocial.infraestructure.entity.PostEntity;
@@ -18,6 +19,7 @@ import reactor.core.publisher.Mono;
 public class PostService implements PostInputPort {
 
     private final PostRepositoryOutputPort postRepositoryOutputPort;
+    private final UserRepositoryOutputPort userRepositoryOutputPort;
 
     @Override
     public Mono<PostListResponse> findAll() {
@@ -41,22 +43,40 @@ public class PostService implements PostInputPort {
 
     @Override
     public Mono<PostResponse> savePost(PostRequest postRequest) {
-        return Mono.just(postRequest)
-                .map(PostUtils::convertPostEntity)
-                .flatMap(postRepositoryOutputPort::savePostOrUpdate)
-                .map(postEntity -> PostUtils.convertPostResponseSave(String.valueOf(postEntity.getId())))
+        return userRepositoryOutputPort.findById(postRequest.getUsuarioId())
+                .switchIfEmpty(Mono.error(new IllegalArgumentException("El usuario con ID " + postRequest.getUsuarioId() + " no existe")))
+                .flatMap(user -> {
+                    PostEntity postEntity = PostUtils.convertPostEntity(postRequest);
+                    return postRepositoryOutputPort.savePostOrUpdate(postEntity);
+                })
+                .map(savedPost -> PostUtils.convertPostResponseSave(String.valueOf(savedPost.getId())))
                 .doOnError(error -> log.error("Error en savePost(): {}", error.getMessage(), error))
                 .onErrorResume(PostUtils::handleErrorPostMono);
-
     }
+
 
     @Override
     public Mono<PostResponse> updatePost(PostRequest postRequest) {
-        return null;
+        return postRepositoryOutputPort
+                .findById(postRequest.getId())
+                .map(existingPost -> PostUtils.convertPostEntityUpdate(postRequest))
+                .switchIfEmpty(Mono.error(new RuntimeException("Post con id " + postRequest.getId() + " no encontrado")))
+                .flatMap(postRepositoryOutputPort::savePostOrUpdate)
+                .map(updatedPost -> PostUtils.convertPostResponseSave(String.valueOf(updatedPost.getId())))
+                .doOnError(error -> log.error("Error en updatePost(): {}", error.getMessage(), error))
+                .onErrorResume(PostUtils::handleErrorPostMono);
     }
 
     @Override
     public Mono<PostResponse> deletePost(Long id) {
-        return null;
+        return postRepositoryOutputPort
+                .findById(id)
+                .flatMap(existingPost -> postRepositoryOutputPort
+                        .deleteById(id)
+                        .then(Mono.just(PostUtils.convertPostResponseDelete(String.valueOf(id))))
+                )
+                .switchIfEmpty(Mono.error(new RuntimeException("Post con id " + id + " no encontrado")))
+                .doOnError(error -> log.error("Error en deletePost(): {}", error.getMessage(), error))
+                .onErrorResume(PostUtils::handleErrorPostMono);
     }
 }

@@ -7,6 +7,7 @@ public class Constantes {
     public static final Integer COD_RESPONSE = 0;
     public static final String USER_SAVED = "Usuario guardado exitosamente";
     public static final String USER_DELETED = "Usuario eliminado exitosamente";
+    public static final String POST_DELETED = "Post eliminado exitosamente";
     public static final String USER_UPDATED = "Usuario actualizado exitosamente";
     public static final String SAVE_ERROR = "Error al guardar: ";
     public static final String UPDATE_ERROR = "Error al actualizar: ";
