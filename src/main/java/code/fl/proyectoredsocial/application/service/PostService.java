@@ -3,10 +3,12 @@ package code.fl.proyectoredsocial.application.service;
 import code.fl.proyectoredsocial.application.port.in.PostInputPort;
 import code.fl.proyectoredsocial.application.port.out.PostRepositoryOutputPort;
 import code.fl.proyectoredsocial.application.port.out.UserRepositoryOutputPort;
+import code.fl.proyectoredsocial.domain.error.PostNotFoundException;
 import code.fl.proyectoredsocial.domain.model.PostListResponse;
 import code.fl.proyectoredsocial.domain.model.PostResponse;
 import code.fl.proyectoredsocial.infraestructure.entity.PostEntity;
 import code.fl.proyectoredsocial.infraestructure.model.PostRequest;
+import code.fl.proyectoredsocial.infraestructure.utils.Constantes;
 import code.fl.proyectoredsocial.infraestructure.utils.PostUtils;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -73,10 +75,10 @@ public class PostService implements PostInputPort {
                 .findById(id)
                 .flatMap(existingPost -> postRepositoryOutputPort
                         .deleteById(id)
-                        .then(Mono.just(PostUtils.convertPostResponseDelete(String.valueOf(id))))
+                        .then(Mono.defer(() -> Mono.just(PostUtils.convertPostResponseDelete(String.valueOf(id)))))
                 )
-                .switchIfEmpty(Mono.error(new RuntimeException("Post con id " + id + " no encontrado")))
-                .doOnError(error -> log.error("Error en deletePost(): {}", error.getMessage(), error))
+                .switchIfEmpty(Mono.error(new PostNotFoundException("Post con id " + id + " no encontrado")))
+                .doOnError(error -> log.error(Constantes.DELETE_ERROR, error.getMessage(), error))
                 .onErrorResume(PostUtils::handleErrorPostMono);
     }
 }

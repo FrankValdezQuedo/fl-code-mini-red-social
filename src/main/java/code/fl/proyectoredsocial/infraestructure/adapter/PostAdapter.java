@@ -19,7 +19,7 @@ public class PostAdapter implements PostRepositoryOutputPort {
 
     @Override
     public Mono<PostEntity> findById(Long id) {
-        return null;
+        return repository.findById(id);
     }
 
     @Override
