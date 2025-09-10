@@ -12,6 +12,7 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 public class PostAdapter implements PostRepositoryOutputPort {
     private final PostRepository repository;
+
     @Override
     public Flux<PostEntity> findAll() {
         return repository.findAll();

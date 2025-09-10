@@ -13,4 +13,8 @@ public class Constantes {
     public static final String UPDATE_ERROR = "Error al actualizar: ";
     public static final String DELETE_ERROR = "Error al eliminar: ";
     public static final String POST_SAVE = "Post guardado exitosamente";
+    public static final String COMENTARIO_SAVE = "Comentario guardado exitosamente";
+    public static final String COMENTARIO_DELETED = "Comentario eliminado exitosamente";
+    public static final String COMENTARIO_UPDATED = "Comentario actualizado exitosamente";
+    public static final String FIND_ERROR = "Error al buscar: ";
 }
