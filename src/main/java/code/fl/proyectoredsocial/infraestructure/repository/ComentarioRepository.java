@@ -8,7 +8,6 @@ import reactor.core.publisher.Flux;
 @Repository
 public interface ComentarioRepository extends ReactiveCrudRepository<ComentarioEntity, Long> {
     Flux<ComentarioEntity> findAllByUsuarioId(Long usuarioId);
-
     Flux<ComentarioEntity> findAllByPostId(Long postId);
 }
 
