@@ -8,17 +8,22 @@ import code.fl.proyectoredsocial.domain.model.ComentarioResponse;
 import code.fl.proyectoredsocial.infraestructure.model.ComentarioRequest;
 import code.fl.proyectoredsocial.infraestructure.utils.ComentarioUtils;
 import code.fl.proyectoredsocial.infraestructure.utils.Constantes;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
 @Service
 @Slf4j
-@RequiredArgsConstructor
+
 public class ComentarioService implements ComentarioInputPort {
 
+
     private final ComentarioRepositoryOutputPort comentarioOutputPort;
+
+    public ComentarioService(@Qualifier("comentarioRepositoryOutputPort") ComentarioRepositoryOutputPort comentarioOutputPort) {
+        this.comentarioOutputPort = comentarioOutputPort;
+    }
 
     @Override
     public Mono<ComentarioListResponse> findAll() {
